@@ -6,12 +6,12 @@
 <h2>
 <a name="-1" class="anchor" href="#-1"><span class="mini-icon mini-icon-link"></span></a>如何使用</h2>
 
-<p>引用websqlwrapprjs</p>
+<p>在html中引用websqlwrapprjs</p>
 
-<pre><code><script src="websqlwrapper.js"></script>
+<pre><code>"websqlwrapper.js"
 </code></pre>
 
-<p>1、建立数据库</p>
+<h3>1、建立数据库</h3>
 <p>注意：建立数据库是同步操作</p>
 <pre><code>var db = new WebsqlWrapper({
           name: 'demoDB'
@@ -20,14 +20,23 @@
     });
 </code></pre>
 
-<p>2、建立一张数据表名为demo数据表</p>
+<h3>2、建立一张数据表名为demo数据表</h3>
 <p>demoReady 为建立数据表成功后的回调</p>
 <pre><code>db.query('CREATE TABLE IF NOT EXISTS demo(id INTEGER UNIQUE, message TEXT NOT NULL, num FLOAT);', demoReady);
 </code></pre>
 
+<h3>3、操作数据表</h3>
 <p>在demoReady回调中，就可进行对表进行操作了</p>
+
 <p>保存一条数据, save: 更新或插入</p>
 <p>注意：需要传第三个参数key</p>
 <pre><code>db.save('demo', {id: 1, message: 'helloworld', num: 123456}, 'id');
 </code></pre>
+
+<p>保存一条数据, save: 更新或插入</p>
+<p>注意：需要传第三个参数key</p>
+<pre><code>db.save('demo', {id: 1, message: 'helloworld', num: 123456}, 'id');
+</code></pre>
+
+
 
