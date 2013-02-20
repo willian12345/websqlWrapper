@@ -9,8 +9,9 @@
 <h4>所有数据的操作结果及过程请在控制台查看</h4>
 <script src="websqlwrapper.js"></script>
 <script>
-        // 设置debug模式开启
-        WebsqlWrapper.setDebug(true);
+    // 设置debug模式开启
+    WebsqlWrapper.setDebug(true);
+
 	// 建立数据库 
 	// 注意：建立数据库是同步操作
 	var db = new WebsqlWrapper({
@@ -18,10 +19,14 @@
 	    , displayName:'demoDB1'
 	    , version:1
 	});
-
+    
+    
+    // db.drop('demo');
+    // db.drop('demo1');
+    
 	// 建立两张数据表名为demo数据表
-	db.query('CREATE TABLE IF NOT EXISTS demo(id INTEGER UNIQUE, message TEXT NOT NULL, num FLOAT);', demoReady);
-	// db.query('CREATE TABLE IF NOT EXISTS demo1(id INTEGER UNIQUE, message TEXT NOT NULL, num FLOAT);', demo1Ready);
+	db.define('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demoReady);
+	db.define('demo1',{id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demo1Ready);
 
 	// 注意：对数据的插入，更新，查找，删除都是异步操作, 虽然也提供同步接口，但这不符合咱JS的特性，所以暂时未实现同步功能
 

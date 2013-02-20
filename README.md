@@ -2,7 +2,9 @@
 <p>WebsqlWrapper是一个简化websql操作的javascript库，在BSD协议下开源发布。</p>
 
 <p>WebsqlWrapper名称的来历: websql 包装器。</p>
-
+<p>此库的所有操作都是异步的，虽然websql提供同步操作接口，但为了UI考虑，本库暂时只提供异步操作</p>
+<br />
+<hr />
 <h2>
 <a name="-1" class="anchor" href="#-1"><span class="mini-icon mini-icon-link"></span></a>如何使用</h2>
 
@@ -22,36 +24,39 @@
 
 <h3>2、建立一张数据表名为demo数据表</h3>
 <p>demoReady 为建立数据表成功后的回调</p>
-<pre><code>db.query('CREATE TABLE IF NOT EXISTS demo(id INTEGER UNIQUE, message TEXT NOT NULL, num FLOAT);', demoReady);
+<pre><code>db.define('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demoReady);
 </code></pre>
 
 <h3>3、操作数据表</h3>
 <p>在demoReady回调中，就可进行对表进行操作了</p>
+<p>操作数据表，首先得获得一个数据表的实例</p>
+<pre><code>var table = db.instance('demo');
+</code></pre>
 
 <p>保存一条数据, save: 更新或插入</p>
-<p>注意：需要传第三个参数key</p>
-<pre><code>db.save('demo', {id: 1, message: 'helloworld', num: 123456}, 'id');
+<p>注意：需要传第二个参数key</p>
+<pre><code>table.save({id: 1, message: 'helloworld', num: 123456}, 'id');
 </code></pre>
 
 <p>插入数据, insert: 更新或插入</p>
 <p>注意：由于我们设置了id字段为unique所以当程序执行第二遍时控制台会输出错误信息</p>
-<pre><code>db.insert('demo',{id: 2, message: 'fuckworld', num: 123});
-        db.insert('demo',{id: 3, message: 'hi', num: 123});
+<pre><code>table.insert({id: 2, message: 'fuckworld', num: 123});
+        table.insert({id: 3, message: 'hi', num: 123});
 </code></pre>
 
 <p>更新数据, update</p>
-<p>注意：需要传第三个参数key</p>
-<pre><code>db.update('demo',{id: 2, message: 'fuckworld-updated', num: 123}, 'id');
+<p>注意：需要传第二个参数key</p>
+<pre><code>table.update({id: 2, message: 'fuckworld-updated', num: 123}, 'id');
 </code></pre>
 
 <p>获取数据, get</p>
-<pre><code>db.get('demo', 'num === 123', function(r){
+<pre><code>table.get('num === 123', function(r){
         	console.log('查询数据: ', r);
         });
 </code></pre>
-
+<br /><br />
 <hr />
-
+<br /><br />
 <p>SQL语句执行函数, query</p>
 <pre><code>db.query('SELECT * FROM demo', function(r){
         	console.log('查询结果: ', r);
@@ -71,7 +76,7 @@
         	, {type: 'query', item: 'SELECT * FROM demo'}
         ];
 		// 批处理
-        db.batch('demo', arr, function(r){
+        table.batch(arr, function(r){
         	console.log('批处理操作成功！');
         });
 </code></pre>

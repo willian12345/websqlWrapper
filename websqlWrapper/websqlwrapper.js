@@ -192,6 +192,16 @@
             ); 
             return this;
         }
+        , define: function( tableName, o , cb ){
+            var sql, s;
+            if(!Utils.is.Object(o)){
+                log('定义表格需要传入字段对象');
+                return ;
+            }
+            s = JSON.stringify(o).replace(/[":\{\}]/g, ' ');
+            sql = 'CREATE TABLE IF NOT EXISTS '+tableName+'('+ s +')';
+            this.query(sql, cb);
+        }
         , update: function(tableName, values, where, cb){
             var k, filed, _values;
             if(!Utils.is.Object(values)) return false;
