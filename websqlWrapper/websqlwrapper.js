@@ -122,39 +122,7 @@
         DEBUG = bool;
     };
     WebsqlWrapper.prototype = {
-        addEvent: function(eventName, func){///
-            var cbs = this.events[eventName] = this.events[eventName] || [];
-            if(Utils.is.Function(func)){
-                cbs.push(func);
-            }
-            return this;
-        }
-        , removeEvent: function(eventName, func){///
-            var i, eventList = this.events[eventName];
-            if(!Utils.is.Array(eventList)) return this;
-            if(eventName && func){
-                i = eventList.indexOf(func);
-                if(i > -1){
-                    eventList.splice(i,1);
-                }
-            }else if(eventName){
-                eventList.length = 0;
-            }
-            return this;
-        }
-        , dispatchEvents: function(eventName){///
-            var i
-            , j 
-            , cbs = this.events[eventName] || []
-            , l = cbs.length
-            ;
-            if(l){
-                for(i=0, j=l; i<j; i++){
-                    cbs[i].call(this, eventName);
-                }
-            }
-        }
-        , query: function(sql, rowParam, cb){
+        query: function(sql, rowParam, cb){
             var params = []
             , isSave = false
             , self = this
