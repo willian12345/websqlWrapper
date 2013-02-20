@@ -1,11 +1,11 @@
 ~function(){
-	"use strict";
-	/**
-	 * WebsqlWrapper websql操作库
+    "use strict";
+    /**
+     * WebsqlWrapper websql操作库
      * ver:1.0
      * 2013/2/7
      * mailto: xiaodong1986@me.com
-	 */
+     */
     
     var init
     , Database
@@ -369,6 +369,6 @@
 
     init();
 
-	return window['WebsqlWrapper'] = WebsqlWrapper;
+    return window['WebsqlWrapper'] = WebsqlWrapper;
 }(window);
 
