@@ -54,7 +54,7 @@
     };
 
     /**
-     * [todo 另一种调用方式实现]
+     * [数据表构造函数]
      * eg: db.instance('codebook').get('code=2', function(){})
      */
     Table = function(name, db, websqlWrapper){
