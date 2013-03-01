@@ -15,6 +15,13 @@
 
 <h3>1、建立数据库</h3>
 <p>注意：建立数据库是同步操作</p>
+<pre><code>var db = WebsqlWrapper({
+          name: 'demoDB'
+        , displayName:'demoDB1'
+        , version:1
+    });
+</code></pre>
+<p>或,以传统方式new一个数据库出来</p>
 <pre><code>var db = new WebsqlWrapper({
           name: 'demoDB'
         , displayName:'demoDB1'

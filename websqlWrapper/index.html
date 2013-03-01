@@ -12,12 +12,19 @@
 
 	// 建立数据库 
 	// 注意：建立数据库是同步操作
-	var db = new WebsqlWrapper({
-	      name: 'demoDB'
-	    , displayName:'demoDB1'
-	    , version:1
+	// var db = new WebsqlWrapper({
+	//       name: 'demoDB'
+	//     , displayName:'demoDB1'
+	//     , version:1
+ //        , debug: true
+	// });
+
+    var db = WebsqlWrapper({
+          name: 'demoDB'
+        , displayName:'demoDB1'
+        , version:1
         , debug: true
-	});
+    });
     
     
     // db.drop('demo');
