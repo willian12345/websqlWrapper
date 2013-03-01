@@ -1,4 +1,12 @@
-~function(){
+!function(name, definition, global){
+    if (typeof define === 'function') {// AMD
+        define(definition);
+    } else if (typeof module !== 'undefined' && module.exports) {// CommonJS
+        module.exports = definition();
+    } else {// normal
+        global[name] = definition();
+    }
+}('WebsqlWrapper', function(){
     "use strict";
     /**
      * WebsqlWrapper websql操作库
@@ -337,6 +345,8 @@
 
     init();
 
-    return window['WebsqlWrapper'] = WebsqlWrapper;
-}(window);
+    return function(data){
+        return new WebsqlWrapper(data);
+    };
+}, this);
 

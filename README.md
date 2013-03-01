@@ -23,6 +23,7 @@
 </code></pre>
 
 <h3>2、建立一张数据表名为demo数据表</h3>
+<p>第一个参数是表名，第二个参数即字段对象,键/值形式，值代表字段对应的类型限制</p>
 <p>demoReady 为建立数据表成功后的回调</p>
 <pre><code>db.define('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demoReady);
 </code></pre>
