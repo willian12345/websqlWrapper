@@ -321,6 +321,31 @@
             }.bind(this));
             return this;
         }
+        /*
+         * 同個交易中批次執行原生SQL指令
+         * 
+         */
+        , batchExec: function(arr, cb) {
+            var i;
+
+            if (!Utils.is.Array(arr)) {
+                return;
+            }
+
+            i = arr.length;
+            this.db.transaction(function(tx) {
+                arr.forEach(function(v) {
+                    var sql = v;
+                    tx.executeSql(sql, [], function(tx, results) {
+                        //console.log('SQL Batch Executed, ' + sql);
+                    }, function(tx, e) {
+                        cb(null);
+                        errorHandle.apply(this, [tx, e, sql]);
+                    });
+                });
+            }.bind(this));
+            return this;
+        }
         /**
          * [drop 删除表]
          * @param  {[String]} tableName [tabel名称]
