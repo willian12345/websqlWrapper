@@ -209,7 +209,7 @@
                 _values.push(values[k])
             }
             filed = filed.join(',');
-            var sql = 'INSERT INTO '+ tableName +'('+ filed +') VALUES ('+ filed.replace(/[a-zA-Z-_]+/g, '?') +');';
+            var sql = 'INSERT INTO '+ tableName +'('+ filed +') VALUES ('+ filed.replace(/[a-zA-Z-_\d]+/g, '?') +');';
             this.query(sql, _values, cb);
             return this;
         }
