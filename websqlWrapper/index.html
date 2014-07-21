@@ -42,7 +42,7 @@
 
 		// 保存一条数据, save: 更新或插入
 		// 注意：需要传第三个参数key
-		db.save('demo', {id: 1, message: 'helloworld', num: 123456}, 'id');
+		db.save('demo', {id: 1, message: 'yoyoyo', num: 123456}, 'id');
 
 		// 插入数据 
 		// 注意：由于我们设置了id字段为unique所以当程序执行第二遍时控制台会输出错误信息
@@ -51,7 +51,7 @@
 
         // 更新数据
         // 注意：需要传第三个参数key
-        db.update('demo',{id: 2, message: 'fuckworld-updated', num: 123}, 'id');
+        db.update('demo',{id: 2, message: 'fuckworld-updated1111', num: 123}, 'id');
 
         // 获取数据
         db.get('demo', 'num === 123', function(r){
@@ -82,7 +82,7 @@
 		var table = db.instance('demo1');
 		// 保存一条数据, save: 更新或插入
 		// 注意：需要传第三个参数key
-		table.save({id: 1, message: 'helloworld', num: 123456}, 'id');
+		table.save({id: 1, message: 'hi every one', num: 123456}, 'id');
 
 		// 插入数据 
 		// 注意：由于我们设置了id字段为unique所以当程序执行第二遍时控制台会输出错误信息

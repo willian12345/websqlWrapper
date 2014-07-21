@@ -12,7 +12,7 @@
      * WebsqlWrapper websql操作库
      * ver:1.0
      * 2013/2/7
-     * mailto: xiaodong1986@me.com
+     * mailto: willian12345@126.com
      */
     
     var init
