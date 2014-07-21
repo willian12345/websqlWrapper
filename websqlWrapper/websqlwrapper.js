@@ -209,7 +209,7 @@
                 _values.push(values[k])
             }
             filed = filed.join(',');
-            var sql = 'INSERT INTO '+ tableName +'('+ filed +') VALUES ('+ filed.replace(/[a-zA-Z-_]+/g, '?') +');';
+            var sql = 'INSERT INTO '+ tableName +'('+ filed +') VALUES ('+ filed.replace(/[a-zA-Z-_\d]+/g, '?') +');';
             this.query(sql, _values, cb);
             return this;
         }
@@ -318,6 +318,31 @@
                 }else{
                     this[v.type](tableName, item, args, _cb);   
                 }
+            }.bind(this));
+            return this;
+        }
+        /*
+         * 同個交易中批次執行原生SQL指令
+         * 
+         */
+        , batchExec: function(arr, cb) {
+            var i;
+
+            if (!Utils.is.Array(arr)) {
+                return;
+            }
+
+            i = arr.length;
+            this.db.transaction(function(tx) {
+                arr.forEach(function(v) {
+                    var sql = v;
+                    tx.executeSql(sql, [], function(tx, results) {
+                        //console.log('SQL Batch Executed, ' + sql);
+                    }, function(tx, e) {
+                        cb(null);
+                        errorHandle.apply(this, [tx, e, sql]);
+                    });
+                });
             }.bind(this));
             return this;
         }
