@@ -12,13 +12,6 @@
 
 	// 建立数据库 
 	// 注意：建立数据库是同步操作
-	// var db = new WebsqlWrapper({
-	//       name: 'demoDB'
-	//     , displayName:'demoDB1'
-	//     , version:1
- //        , debug: true
-	// });
-
     var db = WebsqlWrapper({
           name: 'demoDB'
         , displayName:'demoDB1'
@@ -26,9 +19,10 @@
         , debug: true
     });
     
-    
+    // 删除数据表
     // db.drop('demo');
     // db.drop('demo1');
+
     
 	// 建立两张数据表名为demo数据表
 	db.define('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demoReady);
@@ -79,7 +73,7 @@
 	function demo1Ready(){
 
 		// 先获得一个数据表的实例
-		var table = db.instance('demo1');
+        var table = db.instance('demo1');
 		// 保存一条数据, save: 更新或插入
 		// 注意：需要传第三个参数key
 		table.save({id: 1, message: 'hi every one', num: 123456}, 'id');

@@ -66,24 +66,6 @@
      * eg: db.instance('codebook').get('code=2', function(){})
      */
     Table = function(name, db, websqlWrapper){
-        if(!Table.initPrototype){
-            // 延迟至用到时才创建 table 的实例方法
-            ['update', 'insert', 'save', 'get', 'del', 'drop', 'batch'].forEach(function(v,i){
-                Table.prototype[v] = function(){
-                    this.super[v].apply(this.super, this.makeArgs(arguments));
-                    return this;
-                }.bind(this);
-            }.bind(this));
-            ///
-            ['query', 'count'].forEach(function(v){
-                Table.prototype[v] = function(){
-                    this.super[v].apply(this.super, arguments);
-                    return this;
-                }.bind(this);
-            }.bind(this));
-
-            Table.initPrototype = true;
-        }
         this.name = name;
         this.db = db;
         this.super = websqlWrapper;
@@ -95,6 +77,21 @@
             return args;
         }
     };
+
+    // 延迟至用到时才创建 table 的实例方法
+    ['update', 'insert', 'save', 'get', 'del', 'drop', 'batch'].forEach(function(v,i){
+        Table.prototype[v] = function(){
+            this.super[v].apply(this.super, this.makeArgs(arguments));
+            return this;
+        }
+    });
+    ///
+    ['query', 'count'].forEach(function(v){
+        Table.prototype[v] = function(){
+            this.super[v].apply(this.super, arguments);
+            return this;
+        };
+    });
 
     // websqlWrapper 构造函数
     WebsqlWrapper = function ( opts ) {

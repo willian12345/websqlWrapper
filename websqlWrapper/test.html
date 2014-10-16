@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>websqlWrapper demo</title>
+</head>
+<body>
+<h1>WebsqlWrapper</h1>
+<h4>所有数据的操作结果及过程请在控制台查看</h4>
+<script src="websqlwrapper.js"></script>
+<script>
+
+	// 建立数据库 
+	// 注意：建立数据库是同步操作
+	// var db = new WebsqlWrapper({
+	//       name: 'demoDB'
+	//     , displayName:'demoDB1'
+	//     , version:1
+ //        , debug: true
+	// });
+
+    var db = WebsqlWrapper({
+          name: 'demoDB'
+        , displayName:'demoDB1'
+        , version:1
+        , debug: true
+    });
+    
+    // db.drop('demo');
+    // db.drop('demo1');
+    
+	db.define('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demoReady);
+	db.define('demo1',{id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'}, demo1Ready);
+
+	function demoReady(){
+        var d = db.instance('demo');
+        d.save({id: 1, message: 'row1', num: 11},'id');
+        d.save({id: 2, message: 'row2', num: 12},'id');
+    }
+    function demo1Ready(){
+        var d1 = db.instance('demo1');
+        d1.save({id: 3, message: 'expected d1', num: 111},'id');
+    }
+</script>
+</body>
+</html>
