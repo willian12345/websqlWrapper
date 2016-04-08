@@ -52,7 +52,7 @@
 
         emptyHandle = function(){};
         errorHandle = function( tx, err, sql ){
-            log( '最后一句异常 SQL: ' + sql );
+            log('[error]:' + err.message + "  [sql]:" + sql);
         };
 
         // 转换 a === b && b == c 语句成sql语法
@@ -276,50 +276,31 @@
             this.query(sql, cb);
             return this; 
         }
-        /**
-         * [batch 批处理命令, 可批量进行save, insert, update, del]
-         * @param  {[String]}   tableName [执行操作的table名]
-         * @param  {Array}   arr       [批处理命令集]
-         * @param  {[Function]} cb        [回调]
-         * @return {[Object]} [this]
-         */
-        , batch: function(tableName, arr, cb){
-            var i;
-            if(Utils.is.Array(tableName)){
-                cb = arr;
-                arr = tableName;
-            }
-
-            if(!Utils.is.Array(arr)) {
-                return ;
-            }
-
-            i = arr.length;
-            arr.forEach(function(v){
-                var item = v.item
-                , args = v.args // 特殊参数用于update, save 传递key参数
-                , _cb  = function(){
-                        if(--i === 0){
-                            cb();
-                        }
-                    }
-                ;
-                // 没有特殊参数则第三个参数为本次操作的回调
-                if(!args) args = _cb;
-                if(v.tableName){
-                    tableName = v.tableName;
-                }
-                
-                if(v.type === 'query'){
-                    this['query'](item, _cb);
-                }else{
-                    this[v.type](tableName, item, args, _cb);   
-                }
-            }.bind(this));
-            return this;
-        }
+       /**
+        * [batch 批处理命令, 可批量进行save, insert, update, del]
+	    * @param  {[String]}   tableName [执行操作的table名] , 可以不传表名，直接传arr数组，表名在 arr 项的 args属性中携带
+		* @param  {Array}   arr   [批处理命令集，型如{type: "update", args: ['表名',{id:1, name:'修改'},'id', callback]}]		
+        */
+        , batch: function(tableName, arr) {
+				if (Utils.is.Array(tableName)) {
+					arr = tableName;
+					tableName = null;
+				}
+				if (!Utils.is.Array(arr)) {
+					return;
+				}
+				arr.forEach(function(v) {
+					if (v.type === 'query') {
+						this['query'].apply(this, v.args); //query不用传表名作为第一个参数
+					} else {
+						var args = tableName ? [].concat(tableName, v.args) : v.args; //当第一个参数tableName不是表名时，v.args中应该包含表名参数
+						this[v.type].apply(this, args);
+					}
+				}.bind(this));
+				return this;
+			}
         /*
-         * 同個交易中批次執行原生SQL指令
+         * 同个事务中执行原生SQL指令
          * 
          */
         , batchExec: function(arr, cb) {

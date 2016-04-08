@@ -75,17 +75,21 @@
 <p>可以定义一个数组，数组项为需要操作的数据库命令，来批处理操作，列如：一次性插入，更新，删除，保存等操作</p>
 <p>注意：在本库中，暂时所有的数据库API都只提供异步操作，所以在处理多条数据操作时此命令特别重要，等所有命令处理完后即可以回调中放心继续其它操作</p>
 <pre><code>
-		// 定义一个命令数组
+	// 定义一个命令数组
 		var arr = [
-        	  {type: 'save', item: {id: 4, message: 'my name is lilei11', num: 207}, args: 'id'}
-            , {type: 'save', item: {id: 5, message: 'my name is hameimei', num: 201}, args: 'id'}
-            , {type: 'query', item: 'SELECT * FROM demo'}
-            , {type: 'query', item: 'SELECT * FROM demo'}
-        	, {type: 'query', item: 'SELECT * FROM demo'}
+        	  {type: 'save', args: [{id: 4, message: 'my name is lilei11', num: 207}, 'id', function(){ console.log('save finished'); }]}
+            , {type: 'save', args: [{id: 5, message: 'my name is hameimei', num: 201}, 'id']}
+            , {type: 'query', args: ['SELECT * FROM demo where id = ?', [1], function(){ console.log('query finished'); }]}            
         ];
-		// 批处理
-        table.batch(arr, function(r){
-        	console.log('批处理操作成功！');
+		// table批处理
+        table.batch(arr);
         });
+        
+        //db的批处理
+        var arr2 = [
+             {type: 'save', args: ['demo', {id: 5, message: 'my name is hameimei', num: 201}, 'id', function(){ console.log('save finished'); }]}  //除了query之外方法，args数组第一个元素是tableName
+           , {type: 'query', args: ['SELECT * FROM demo where id = ?', [1], function(){ console.log('query finished'); }]}      
+        ];
+        db.batch(arr2);
 </code></pre>
 <hr />
