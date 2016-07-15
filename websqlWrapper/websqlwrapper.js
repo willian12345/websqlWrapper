@@ -128,6 +128,9 @@
     };
     WebsqlWrapper.prototype = {
         query: function(sql, rowParam, cb){
+			if(sql === undefined){
+				return;
+			}
             var params = []
             , isSave = false
             , self = this
@@ -166,7 +169,7 @@
             return this;
         }
         , define: function( tableName, o , cb ){
-            var sql, s;
+            var sql='', s='';
             if(!Utils.is.Object(o)){
                 log('定义表格需要传入字段对象');
                 return ;
