@@ -218,7 +218,7 @@
             if(!tableName || !Utils.is.Object(values) || !key) return this;
             sql = 'SELECT count(*) FROM '+ tableName;
             if(Utils.is.String(key)){
-                where = key + '=' + values[key];
+                where = key + "='" + values[key] + "'";
                 sql +=' WHERE '+ where;
             }
             sql += ' ;';
@@ -233,7 +233,7 @@
         }
         , count: function(sql, cb){
             this.query(sql, function(r){
-                if(r.length){
+                if(r && r.length){
                     r = r[0];
                     cb(r['count(*)']);
                 }else{
