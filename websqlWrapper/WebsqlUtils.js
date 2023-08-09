@@ -9,8 +9,12 @@ for(let i = 0, c; c = Utils.types[i++];){
         }
     })(c);
 }
+let showLogInfo = false;
 export const log = function (args){
-    console.log(...args);
+    showLogInfo && console.log(...args);
+}
+export const showLog = (b) => {
+    showLogInfo = b;
 }
 export const emptyHandle = function(){};
 export const errorHandle = function( tx, err, sql ){
@@ -29,7 +33,7 @@ export const dbQuery = function(db, sql, rowParam) {
     return new Promise((resolve, reject) => {
         db.transaction(  
             function (transaction) {  
-                // console.log(sql, rowParam)
+                console.log(sql, rowParam)
                 transaction.executeSql(sql, rowParam, function(tx, results){
                     var arr = [], row, i;
                     for (i=0; i<results.rows.length; i++) {   

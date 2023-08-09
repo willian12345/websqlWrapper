@@ -1,4 +1,4 @@
-import { Utils, dbQuery } from './WebsqlUtils.js';
+import { log, showLog, dbQuery } from './WebsqlUtils.js';
 import { WebsqlTable } from "./WebsqlTable.js";
 
 export class WebsqlWrapper {
@@ -33,27 +33,39 @@ export class WebsqlWrapper {
         }
         this.events = {};  
     }
-   
-    /*
-     * 同个事务中执行原生SQL指令
-     * 
+    /**
+     * 是否开启日志输出
+     * @param {boolean} b 
      */
-    batchExec = function(arr, cb) {
-        if (!Array.isArray(arr)) {
-            return;
-        }
-        this.db.transaction(function(transaction) {
-            arr.forEach(function(v) {
-                var sql = v;
-                transaction.executeSql(sql, [], function(tx, results) {
-                    console.log('SQL Batch Executed, ' + sql);
-                }, function(tx, e) {
-                    cb(null);
-                    errorHandle.apply(this, [tx, e, sql]);
+    static showLog = (b) => {
+        showLog(b)
+    }
+    /**
+     * 同个事务中批量执行原生SQL指令
+     * 
+     * @param {string[]]} arr 
+     * @returns 
+     */
+    batchExec = function(arr) {
+        return new Promise((resolve, reject) => {
+            if (!Array.isArray(arr)) {
+                reject('参数需要传递 SQL 数字串数组')
+            }
+            this.db.transaction((transaction) => {
+                 const promiseArr = arr.map(function(sql) {
+                    return new Promise((res, rej) => {
+                        transaction.executeSql(sql, [], function(tx, results) {
+                            log('SQL Batch Executed, ' + sql, tx);
+                            res(results)
+                        }, function(tx, e) {
+                            rej(e);
+                        });
+                    })
+                    
                 });
+                resolve(Promise.all(promiseArr))
             });
-        }.bind(this));
-        return this;
+        })
     }
     /**
      * [instance 表实例]
