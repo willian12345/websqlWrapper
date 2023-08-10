@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		*{
+			padding:0;
+			margin:0;
+		}
+	</style>
+	<script type="importmap">
+	  {
+	    "imports": {
+	      "WebsqlWrapper": "./websqlwrapper.js"
+	    }
+	  }
+	</script>
+    <script type="module">
+        import { WebsqlWrapper } from 'WebsqlWrapper'
+        
+        const db = new WebsqlWrapper({
+            name: 'demoDB'
+            , displayName:'demoDB1'
+            , version:1
+        });
+        // WebsqlWrapper.showLog(false)
+
+        const table = await db.createTable('demo', {id:'INTEGER UNIQUE', message:'TEXT NOT NULL', num: 'FLOAT'});
+        table.save({id: 1, message: 'yoyo', num: 123456}, 'id');
+        table.insert({id: 8, message: '98fffffsxxx', num: 123});
+        table.insert({id: 3, message: 'hi', num: 123});
+        table.update({id: 2, message: 'fuckworld-updated', num: 3334}, 'id');
+        const resultGet = await table.get('num === 123');
+        console.log('get 查询数据: ', resultGet);
+        const resultQuery = await db.query('SELECT * FROM demo')
+        console.log('查询结果 query: ', resultQuery);
+
+
+        // 定义一个 table 批处理命令数组
+		    // const arr = [
+        //     {type: 'save', args: [{id: 1, message: 'my name is lilei11', num: 207}, 'id', function(){ console.log('save finished'); }]}
+        //     , {type: 'save', args: [{id: 5, message: 'my name is hameimei', num: 201}, 'id']}
+        //     , {type: 'query', args: ['SELECT * FROM demo where id = ?', [1], function(r){ console.log(`query finished`, r); }]}            
+        // ];
+        // table.batch(arr);
+        // const arrSql = [
+        //   `UPDATE demo SET message='XXX111fff' WHERE id=3`,
+        //   `UPDATE demo SET message='yogo111fff' WHERE id=1`
+        // ]
+        // try{
+        //   const test = await db.batchExec(arrSql);
+        //   console.log(test)
+        // }catch(e){
+        //   console.log(e)
+        // }
+        
+        
+    </script>
+</head>
+<body>
+</body>
